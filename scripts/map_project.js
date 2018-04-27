@@ -25,5 +25,5 @@ function initMap() {
     });
     marker.addListener('click', function () {
 
-    })
+    });
 }
