@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100%;
+        }
+    </style>
+
+    <script>
+        document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+            ':35729/livereload.js?snipver=1"></' + 'script>');
+    </script>
+
+</head>
+
+<body>
+
+    <div id="map"></div>
+
+    <script>
+        var map;
+
+        function initMap() {
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: 40.373242,
+                    lng: -105.521494
+                },
+                zoom: 12
+            });
+
+            var tribeca = {
+                lat: 40.373242,
+                lng: -105.521494
+            };
+
+            var marker = new google.maps.Marker({
+                position: tribeca,
+                map: map,
+                title: 'First Maker'
+            });
+            var infowindow = new google.maps.InfoWindow({
+                content: 'blablabla...'
+            });
+            marker.addListener('click', function () {
+                
+            })
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwrgmzKYt6EyyXynU_mIM6T_rlnhNafj8&callback=initMap" async defer></script>
+
+</body>
+
+</html>
