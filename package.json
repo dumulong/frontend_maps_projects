@@ -1,0 +1,26 @@
+{
+  "name": "frontend_maps_projects",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dumulong/frontend_maps_projects.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dumulong/frontend_maps_projects/issues"
+  },
+  "homepage": "https://github.com/dumulong/frontend_maps_projects#readme",
+  "dependencies": {
+    "bootstrap": "^4.1.0",
+    "jquery": "^3.3.1",
+    "knockout": "^3.4.2",
+    "popper.js": "^1.14.3",
+    "toastr": "^2.1.4"
+  }
+}
