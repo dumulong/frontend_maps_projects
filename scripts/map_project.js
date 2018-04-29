@@ -1,4 +1,5 @@
 var map;
+var mapData = mapData || {};
 
 var Marker = function (item) {
     this.title = item.title;
@@ -12,53 +13,44 @@ var ViewModel = function () {
 
     self.markerList = ko.observableArray([]);
 
-    self.addMarker = function (mrkr) {
-        self.markerList.push(new Marker(mrkr));
-    };
+    mapData.markers.forEach(function(marker) {
+        self.markerList.push(new Marker(marker));
+    });
+
 };
 
 
 
 function addMarker(marker, map) {
-    var mrkr = new google.maps.Marker({
+    return new google.maps.Marker({
         position: marker.position,
         map: map,
         title: marker.title
     });
-    return mrkr;
 }
 
 function addInfoWindow(marker) {
-    var inf = new google.maps.InfoWindow({
+    return new google.maps.InfoWindow({
         content: marker.infoContent
     });
-    return inf;
 }
 
 function initMap() {
 
-    var jqxhr = $.getJSON('scripts/map_data.json', function(data) {
+    map = new google.maps.Map(document.getElementById('map'), mapData.mapOptions);
 
-            map = new google.maps.Map(document.getElementById('map'), data.map);
+    mapData.markers.forEach(function(marker) {
+        addMarker(marker, map);
+        addInfoWindow(marker);
+    });
 
-            data.markers.forEach(function(marker) {
-                addMarker(marker, map);
-                addInfoWindow(marker);
-                ViewModel.addMarker(marker);
-            });
+    // var infowindow = new google.maps.InfoWindow({
+    //     content: 'blablabla...'
+    // });
 
-            // var infowindow = new google.maps.InfoWindow({
-            //     content: 'blablabla...'
-            // });
+    // marker.addListener('click', function () {
 
-            // marker.addListener('click', function () {
-
-            // });
-
-        })
-        .fail(function() {
-            toastr.error('Unable to load map data...');
-        });
+    // });
 
 }
 

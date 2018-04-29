@@ -23,8 +23,8 @@ body {
 
 .top-bar {
     flex: 0 1 100%;
-    background-color: black;
-    color: white;
+    background: linear-gradient(to bottom right, gray, black);
+    color: silver;
     padding: 10px;
 }
 
