@@ -17,5 +17,13 @@ var markers = [
             lat: 40.3760042,
             lng: -105.524226
         }
+    },
+    {
+        title: 'Poppy\'s Pizza & Grill',
+        position: {
+            lat: 40.3767192,
+            lng: -105.5194351
+        }
     }
+
 ];
