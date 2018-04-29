@@ -1,8 +1,5 @@
 
 
-//the grubsteak: 40.3760042,-105.524226
-//Rent house: 40.376004, -105.524226
-
 var markers = [
     {
         title: 'Rented House',
