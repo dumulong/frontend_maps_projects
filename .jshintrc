@@ -67,6 +67,8 @@
         "it" : false,
         "xit" : false,
         "expect" : false,
-        "spyOn" : false
+        "spyOn" : false,
+        "google" : false,
+        "ko" : false
     }
 }

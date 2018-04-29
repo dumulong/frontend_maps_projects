@@ -20,10 +20,20 @@ function initMap() {
         map: map,
         title: 'First Maker'
     });
+
     var infowindow = new google.maps.InfoWindow({
         content: 'blablabla...'
     });
+
     marker.addListener('click', function () {
 
+    });
+}
+
+var ViewModel = function () {
+    var self = this;
+    this.markerList = ko.observable([]);
+    markers.array.forEach(function(marker){
+        self.markerList.push( new Marker(marker));
     });
 }
