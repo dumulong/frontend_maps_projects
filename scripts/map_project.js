@@ -4,15 +4,15 @@ function initMap() {
 
     map = new google.maps.Map(document.getElementById('map'), {
         center: {
-            lat: 40.373242,
-            lng: -105.521494
+            lat: 40.376004,
+            lng: -105.524226
         },
         zoom: 12
     });
 
     var tribeca = {
-        lat: 40.373242,
-        lng: -105.521494
+        lat: 40.376004,
+        lng: -105.524226
     };
 
     var marker = new google.maps.Marker({
