@@ -24,6 +24,20 @@ var markers = [
             lat: 40.3767192,
             lng: -105.5194351
         }
+    },
+    {
+        title: 'Kind Coffee',
+        position: {
+            lat: 40.3772671,
+            lng: -105.5171981
+        }
+    },
+    {
+        title: 'The Stanley',
+        position: {
+            lat: 40.383371,
+            lng: -105.5191728
+        }
     }
 
 ];
