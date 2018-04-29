@@ -28,11 +28,17 @@
     <div class="full-page flxbx">
 
         <div class="top-bar">
-            sdlkflasf
+            <h1>My Neighborhood Map</h1>
         </div>
 
         <div class="main-content flxbx">
-            <div class="left-menu">LEFT</div>
+
+            <div class="left-menu">
+                <ul data-bind="foreach: markerList">
+                    <li data-bind="text: title"></li>
+                </ul>
+            </div>
+
             <div class="map-area">
                 <div id="map"></div>
             </div>

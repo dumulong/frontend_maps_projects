@@ -1,12 +1,23 @@
 var map;
 
+var Marker = function (item) {
+    this.title = item.title;
+    this.position = item.position;
+    this.infoContent = item.infoContent;
+};
+
 var ViewModel = function () {
+
     var self = this;
-    this.markerList = ko.observable([]);
-    this.addMarker = function (mrkr) {
-        self.markerList.push(mrkr);
+
+    self.markerList = ko.observableArray([]);
+
+    self.addMarker = function (mrkr) {
+        self.markerList.push(new Marker(mrkr));
     };
 };
+
+
 
 function addMarker(marker, map) {
     var mrkr = new google.maps.Marker({
@@ -51,3 +62,4 @@ function initMap() {
 
 }
 
+ko.applyBindings(new ViewModel());
