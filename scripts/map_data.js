@@ -10,6 +10,7 @@ mapData.mapOptions = {
 
 mapData.markers =  [
     {
+        id: 0,
         title: 'Rented House',
         infoContent: 'You can rent this house and be ready for nice vacation',
         position: {
@@ -18,6 +19,7 @@ mapData.markers =  [
         }
     },
     {
+        id: 1,
         title: 'The Grubsteak Restaurant',
         infoContent: 'The Grubsteak Restaurant',
         position: {
@@ -26,6 +28,7 @@ mapData.markers =  [
         }
     },
     {
+        id: 2,
         title: 'Poppy\'s Pizza & Grill',
         infoContent: 'Poppy\'s Pizza & Grill',
         position: {
@@ -34,6 +37,7 @@ mapData.markers =  [
         }
     },
     {
+        id: 3,
         title: 'Kind Coffee',
         infoContent: 'Kind Coffee',
         position: {
@@ -42,6 +46,7 @@ mapData.markers =  [
         }
     },
     {
+        id: 4,
         title: 'Rock Cut Brewing Company',
         infoContent: 'Rock Cut Brewing Company',
         position: {
@@ -50,6 +55,7 @@ mapData.markers =  [
         }
     },
     {
+        id: 5,
         title: 'The Stanley',
         position: {
             lat: 40.383371,

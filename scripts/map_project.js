@@ -30,9 +30,11 @@ var mapData = mapData || {}; //Our initial data for the map
     self.addGMarker = function (marker) {
 
         var mrk = new google.maps.Marker({
+            id: marker.id,
+            title: marker.title,
+            infoContent: marker.infoContent,
             position: marker.position,
             map: self.map,
-            title: marker.title,
             animation: google.maps.Animation.DROP
         });
 
@@ -54,7 +56,7 @@ var mapData = mapData || {}; //Our initial data for the map
 
     self.findMarker = function (marker) {
         markerList.forEach(function(gMarker) {
-            if (gMarker.title === marker.title) { animateMarker (gMarker); }
+            if (gMarker.id === marker.id) { animateMarker (gMarker); }
         });
     };
 
@@ -67,7 +69,7 @@ var mapData = mapData || {}; //Our initial data for the map
 
         if (infoWindow.marker !== marker) {
             infoWindow.marker = marker;
-            infoWindow.setContent('<div>' + marker.title + '</div>');
+            infoWindow.setContent('<div>' + marker.infoContent + '</div>');
             infoWindow.open(self.map, marker);
             infoWindow.addListener('closeclick', function () {
                 infoWindow.setMarker(null);
@@ -88,6 +90,7 @@ var ViewModel = function () {
     self.filter = ko.observable('');
 
     var Marker = function (item) {
+        this.id = item.id;
         this.title = item.title;
         this.position = item.position;
         this.infoContent = item.infoContent;
