@@ -40,6 +40,7 @@ var mapData = mapData || {}; //Our initial data for the map
 
         mrk.addListener('click', function () {
             populateInfoWindow(this, infoWindow);
+            animateMarker(mrk);
         });
 
         return mrk;
@@ -50,6 +51,17 @@ var mapData = mapData || {}; //Our initial data for the map
             marker.setMap(null);
         });
     };
+
+    self.findMarker = function (marker) {
+        markerList.forEach(function(gMarker) {
+            if (gMarker.title === marker.title) { animateMarker (gMarker); }
+        });
+    };
+
+    function animateMarker (marker) {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function() {marker.setAnimation(null); }, 500);
+    }
 
     function populateInfoWindow(marker) {
 
@@ -85,6 +97,11 @@ var ViewModel = function () {
     mapData.markers.forEach(function(marker) {
         self.markerList.push(new Marker(marker));
     });
+
+    self.findMarker = function (marker) {
+        console.log('here');
+        gMap.findMarker(marker);
+    };
 
     self.filterMarkers = function () {
 
