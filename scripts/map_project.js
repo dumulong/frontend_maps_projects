@@ -7,7 +7,6 @@ var Marker = function (item) {
     this.title = item.title;
     this.position = item.position;
     this.infoContent = item.infoContent;
-    this.gMarker = addMarker (this);
 };
 
 var ViewModel = function () {
@@ -22,20 +21,22 @@ var ViewModel = function () {
     });
 
     self.filterMarkers = function () {
+
         console.log('here');
+
         //Reset to a new list
         self.markerList = ko.observableArray([]);
 
         //Now, if the title maches the filter, add it to our list
         var bounds = new google.maps.LatLngBounds();
+        var fltr = new RegExp(self.filter, 'i');
+
         mapData.markers.forEach(function(marker) {
             if (self.filter !== '') {
-                var fltr = new RegExp(self.filter, 'i');
                 if (fltr.test(marker.title)) {
                     var gMark = self.markerList.push(new Marker(marker));
                     bounds.extend(gMark.position);
                 }
-
             }
         });
 
