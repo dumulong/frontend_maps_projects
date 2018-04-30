@@ -5,13 +5,13 @@ mapData.mapOptions = {
         lat: 40.3759154,
         lng: -105.5245827
     },
-    zoom: 16
+    zoom: 20
 };
 
 mapData.markers =  [
     {
         title: 'Rented House',
-        infoContent: 'Rented House',
+        infoContent: 'You can rent this house and be ready for nice vacation',
         position: {
             lat: 40.373260,
             lng: -105.521492
@@ -47,6 +47,13 @@ mapData.markers =  [
         position: {
             lat: 40.371862,
             lng: -105.522944
+        }
+    },
+    {
+        title: 'The Stanley',
+        position: {
+            lat: 40.383371,
+            lng: -105.5191728
         }
     }
 

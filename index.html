@@ -34,6 +34,7 @@
         <div class="main-content flxbx">
 
             <div class="left-menu">
+                <input type="text" data-bind="value: filter, onchange: filterMarkers" class="form-control" placeholder="Filter by">
                 <ul data-bind="foreach: markerList">
                     <li data-bind="text: title"></li>
                 </ul>
