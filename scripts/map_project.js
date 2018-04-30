@@ -19,7 +19,7 @@ var mapData = mapData || {}; //Our initial data for the map
 
         var bounds = new google.maps.LatLngBounds();
         mapData.markers.forEach(function(marker) {
-            var gMark = self.addGMarker(marker, infoWindow);
+            var gMark = self.addMarker(marker, infoWindow);
             bounds.extend(gMark.position);
         });
         self.map.fitBounds(bounds);
@@ -27,7 +27,7 @@ var mapData = mapData || {}; //Our initial data for the map
         ko.applyBindings(new ViewModel());
     };
 
-    self.addGMarker = function (marker) {
+    self.addMarker = function (marker) {
 
         var mrk = new google.maps.Marker({
             id: marker.id,
