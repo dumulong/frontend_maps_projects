@@ -72,9 +72,8 @@ var mapData = mapData || {}; //Our initial data for the map
 var ViewModel = function () {
 
     var self = this;
-    self.filter = ko.observable('');
 
-    self.markerList = ko.observableArray([]);
+    self.filter = ko.observable('');
 
     var Marker = function (item) {
         this.title = item.title;
@@ -82,6 +81,7 @@ var ViewModel = function () {
         this.infoContent = item.infoContent;
     };
 
+    self.markerList = ko.observableArray([]);
     mapData.markers.forEach(function(marker) {
         self.markerList.push(new Marker(marker));
     });
