@@ -34,7 +34,7 @@
         <div class="main-content flxbx">
 
             <div class="left-menu">
-                <input type="text" data-bind="value: filter, onchange: filterMarkers" class="form-control" placeholder="Filter by">
+                <input type="text" data-bind="value: filter, valueUpdate: 'afterkeydown', event: { keyup: filterMarkers }" class="form-control" placeholder="Filter by">
                 <ul data-bind="foreach: markerList">
                     <li data-bind="text: title"></li>
                 </ul>
@@ -48,7 +48,7 @@
 
     <script src="scripts/map_data.js"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwrgmzKYt6EyyXynU_mIM6T_rlnhNafj8&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwrgmzKYt6EyyXynU_mIM6T_rlnhNafj8&callback=gMap.initMap" async defer></script>
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/popper.min.js"></script>
     <script src="scripts/knockout-latest.js"></script>
