@@ -1,15 +1,20 @@
 <?php
 
 header('Content-type: application/json');
+header("Access-Control-Allow-Origin: *");
 
 $latitude = $_GET['latitude'];
 $longitude = $_GET['longitude'];
+
+$radius = 60; //Default
+if (isset($_GET['radius'])) $radius = $_GET['radius'];
 
 $auth = 'Bearer KTjY6iqgQAWGF-q7OEIc8WP__Zdjsoa2jFtx-_n985PbzOZ30GWLDbWnjO3R8ruADAjYx_LWQ9NY1pWqwwL86LF5oPqcn7rywmiJVZ-MFdKJUVZCVRDOuTx3GLTnWnYx';
 
 $url = 'https://api.yelp.com/v3/businesses/search';
 $url .= '?latitude=' . $latitude;
 $url .= '&longitude=' . $longitude;
+$url .= '&radius=' . $radius;
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL,$url);
