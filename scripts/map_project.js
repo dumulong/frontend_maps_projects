@@ -73,7 +73,7 @@ var ViewModel = function () {
 
         var bounds = new google.maps.LatLngBounds();
         mapData.markers.forEach(function(marker) {
-            var gMark = self.addGMarker(marker, infoWindow);
+            var gMark = self.addMarker(marker, infoWindow);
             bounds.extend(gMark.position);
         });
         self.map.fitBounds(bounds);
@@ -81,7 +81,7 @@ var ViewModel = function () {
         ko.applyBindings(new ViewModel());
     };
 
-    self.addGMarker = function (marker) {
+    self.addMarker = function (marker) {
 
         var mrk = new google.maps.Marker({
             id: marker.id,
@@ -121,12 +121,14 @@ var ViewModel = function () {
 
     function populateInfoWindow(marker) {
 
+        getYelpInfo(marker);
         if (infoWindow.marker !== marker) {
             infoWindow.marker = marker;
             infoWindow.setContent('<div>' + marker.infoContent + '</div>');
             infoWindow.open(self.map, marker);
             infoWindow.addListener('closeclick', function () {
                 infoWindow.setMarker(null);
+
             });
         }
 
@@ -135,3 +137,20 @@ var ViewModel = function () {
     gMap = self;
 
 })();
+
+function getYelpInfo (marker) {
+
+    var yelpURL = 'http://127.0.0.1:8181/udacity/frontend_maps_projects/yelp_proxy.php';
+    var latlng = 'latitude=' + marker.position.lat() + '&longitude=' +  marker.position.lng();
+    var url = yelpURL + '?' + latlng;
+
+    $.ajax({
+        url: url
+    })
+    .done(function(data) {
+        console.log('Done!');
+    });
+
+}
+
+
