@@ -169,6 +169,11 @@ function getYelpInfo (marker) {
     })
     .done(function(data) {
         console.log('Done!');
+    })
+    .fail(function() {
+        toastr.error('Unable to retrieve Yelp rating...');
+        $('#yelpRating').html('Unable to retrieve Yelp rating');
+        console.log('error');
     });
 
 }
