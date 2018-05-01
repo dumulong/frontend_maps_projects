@@ -1,0 +1,1 @@
+Please note that the current project is getting data from the Yelp API.  We did have to implement a proxy PHP page because we ran into some error related to the Same Origin Policy.  You can see the code for the proxy in the file yelp_proxy.php.  I did make it available from my Godaddy hosted website, so the current project works without the need of a server running PHP.
