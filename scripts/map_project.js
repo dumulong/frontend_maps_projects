@@ -121,15 +121,15 @@ var ViewModel = function () {
 
     function populateInfoWindow(marker) {
 
-        getYelpInfo(marker);
         if (infoWindow.marker !== marker) {
             infoWindow.marker = marker;
-            infoWindow.setContent('<div>' + marker.infoContent + '</div>');
+            infoWindow.setContent('<div>' + marker.infoContent + '</div><div id="yelpRating"></div>');
             infoWindow.open(self.map, marker);
             infoWindow.addListener('closeclick', function () {
                 infoWindow.setMarker(null);
 
             });
+            getYelpInfo(marker);
         }
 
     }
@@ -140,12 +140,32 @@ var ViewModel = function () {
 
 function getYelpInfo (marker) {
 
-    var yelpURL = 'http://127.0.0.1:8181/udacity/frontend_maps_projects/yelp_proxy.php';
+    var yelpURL = 'http://weborso.com/Udacity/frontend_maps_projects/yelp_proxy.php';
     var latlng = 'latitude=' + marker.position.lat() + '&longitude=' +  marker.position.lng();
     var url = yelpURL + '?' + latlng;
 
-    $.ajax({
-        url: url
+    $('#yelpRating').html('Retrieving Yelp review...');
+
+    $.getJSON(url, function(data) {
+
+        var tmpStr = 'No review found...';
+        var items = data.businesses;
+
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].name === marker.title) {
+                tmpStr = '';
+                tmpStr += '<div>';
+                tmpStr += 'Yelp Rating: ' + items[i].rating;
+                tmpStr += ' from ' + items[i].review_count + ' Reviewers';
+                tmpStr += '</div>';
+            }
+        }
+
+
+        $('#yelpRating').html(tmpStr);
+
+        console.log(tmpStr);
+
     })
     .done(function(data) {
         console.log('Done!');
