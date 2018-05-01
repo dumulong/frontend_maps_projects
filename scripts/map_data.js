@@ -23,8 +23,8 @@ mapData.markers =  [
         title: 'The Grubsteak Restaurant',
         infoContent: 'The Grubsteak Restaurant',
         position: {
-            lat: 40.3760042,
-            lng: -105.524226
+            lat: 40.375936,
+            lng: -105.524586
         }
     },
     {
@@ -32,8 +32,8 @@ mapData.markers =  [
         title: 'Poppy\'s Pizza & Grill',
         infoContent: 'Poppy\'s Pizza & Grill',
         position: {
-            lat: 40.3767192,
-            lng: -105.5194351
+            lat: 40.376909,
+            lng: -105.519169
         }
     },
     {

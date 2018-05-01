@@ -45,7 +45,7 @@ var ViewModel = function () {
             }
         });
 
-        gMap.map.fitBounds(bounds);
+        if (self.markerList().length > 0) { gMap.map.fitBounds(bounds); }
     };
 
 };
@@ -132,39 +132,39 @@ var ViewModel = function () {
 
     }
 
+    function getYelpInfo (marker) {
+
+        var yelpURL = 'http://weborso.com/Udacity/frontend_maps_projects/yelp_proxy.php';
+        var latlng = 'latitude=' + marker.position.lat() + '&longitude=' +  marker.position.lng();
+        var url = yelpURL + '?' + latlng;
+
+        $('#yelpRating').html('<i class="fa fa-spinner fa-spin" style="font-size:16px"></i> Retrieving Yelp review...');
+
+        $.getJSON(url, function(data) {
+
+            var tmpStr = 'No review found...';
+            var items = data.businesses;
+
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].name.toLowerCase() === marker.title.toLowerCase()) {
+                    tmpStr = '';
+                    tmpStr += '<div>';
+                    tmpStr += 'Yelp Rating: ' + items[i].rating;
+                    tmpStr += ' from ' + items[i].review_count + ' Reviewers';
+                    tmpStr += '</div>';
+                }
+            }
+
+            $('#yelpRating').html(tmpStr);
+
+        })
+        .fail(function() {
+            toastr.error('Unable to retrieve Yelp rating...');
+            $('#yelpRating').html('Unable to retrieve Yelp rating');
+        });
+
+    }
+
     gMap = self;
 
 })();
-
-function getYelpInfo (marker) {
-
-    var yelpURL = 'http://weborso.com/Udacity/frontend_maps_projects/yelp_proxy.php';
-    var latlng = 'latitude=' + marker.position.lat() + '&longitude=' +  marker.position.lng();
-    var url = yelpURL + '?' + latlng;
-
-    $('#yelpRating').html('Retrieving Yelp review...');
-
-    $.getJSON(url, function(data) {
-
-        var tmpStr = 'No review found...';
-        var items = data.businesses;
-
-        for (var i = 0; i < items.length; i++) {
-            if (items[i].name === marker.title) {
-                tmpStr = '';
-                tmpStr += '<div>';
-                tmpStr += 'Yelp Rating: ' + items[i].rating;
-                tmpStr += ' from ' + items[i].review_count + ' Reviewers';
-                tmpStr += '</div>';
-            }
-        }
-
-        $('#yelpRating').html(tmpStr);
-
-    })
-    .fail(function() {
-        toastr.error('Unable to retrieve Yelp rating...');
-        $('#yelpRating').html('Unable to retrieve Yelp rating');
-    });
-
-}
