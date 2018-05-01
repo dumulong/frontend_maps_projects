@@ -1,6 +1,60 @@
 var gMap = {}; //Objet used for the google maps API
 var mapData = mapData || {}; //Our initial data for the map
 
+var ViewModel = function () {
+
+    var self = this;
+
+    self.filter = ko.observable('');
+
+    var infoHtml = $('#infoWindowTempl').get(0).innerHTML;
+
+    var Marker = function (item) {
+        this.id = item.id;
+        this.title = item.title;
+        this.position = item.position;
+        this.infoContent = item.infoContent;
+    };
+
+    self.markerList = ko.observableArray([]);
+    mapData.markers.forEach(function(marker) {
+        self.markerList.push(new Marker(marker));
+    });
+
+    self.findMarker = function (marker) {
+        console.log('here');
+        gMap.findMarker(marker);
+    };
+
+    self.filterMarkers = function () {
+
+        console.log('here');
+
+        //Reset to a new list
+        self.markerList = ko.observableArray([]);
+        gMap.clearAllMarkers ();
+
+        //Now, if the title maches the filter, add it to our list
+        var bounds = new google.maps.LatLngBounds();
+        var fltr = new RegExp(self.filter(), 'i');
+
+        mapData.markers.forEach(function(marker) {
+
+            var isMatch = true;
+            if (self.filter() !== '') { isMatch = fltr.test(marker.title); }
+
+            if (isMatch) {
+                self.markerList.push(new Marker(marker));
+                var gMarker = gMap.addGMarker(marker);
+                bounds.extend(gMarker.position);
+            }
+        });
+
+        gMap.map.fitBounds(bounds);
+    };
+
+};
+
 (function () {
 
     var self = this;
@@ -13,7 +67,7 @@ var mapData = mapData || {}; //Our initial data for the map
     //Starting here!
     self.initMap = function () {
 
-        self.map = new google.maps.Map(document.getElementById('map'), mapData.mapOptions);
+        self.map = new google.maps.Map($('#map').get(0), mapData.mapOptions);
 
         infoWindow = new google.maps.InfoWindow();
 
@@ -81,56 +135,3 @@ var mapData = mapData || {}; //Our initial data for the map
     gMap = self;
 
 })();
-
-
-var ViewModel = function () {
-
-    var self = this;
-
-    self.filter = ko.observable('');
-
-    var Marker = function (item) {
-        this.id = item.id;
-        this.title = item.title;
-        this.position = item.position;
-        this.infoContent = item.infoContent;
-    };
-
-    self.markerList = ko.observableArray([]);
-    mapData.markers.forEach(function(marker) {
-        self.markerList.push(new Marker(marker));
-    });
-
-    self.findMarker = function (marker) {
-        console.log('here');
-        gMap.findMarker(marker);
-    };
-
-    self.filterMarkers = function () {
-
-        console.log('here');
-
-        //Reset to a new list
-        self.markerList = ko.observableArray([]);
-        gMap.clearAllMarkers ();
-
-        //Now, if the title maches the filter, add it to our list
-        var bounds = new google.maps.LatLngBounds();
-        var fltr = new RegExp(self.filter(), 'i');
-
-        mapData.markers.forEach(function(marker) {
-
-            var isMatch = true;
-            if (self.filter() !== '') { isMatch = fltr.test(marker.title); }
-
-            if (isMatch) {
-                self.markerList.push(new Marker(marker));
-                var gMarker = gMap.addGMarker(marker);
-                bounds.extend(gMarker.position);
-            }
-        });
-
-        gMap.map.fitBounds(bounds);
-    };
-
-};
