@@ -7,8 +7,6 @@ var ViewModel = function () {
 
     self.filter = ko.observable('');
 
-    var infoHtml = $('#infoWindowTempl').get(0).innerHTML;
-
     var Marker = function (item) {
         this.id = item.id;
         this.title = item.title;
@@ -63,6 +61,8 @@ var ViewModel = function () {
     var infoWindow = null;
 
     var markerList = [];
+
+    var infoHtml = $('#infoWindowTempl').get(0).innerHTML;
 
     //Starting here!
     self.initMap = function () {
@@ -122,12 +122,13 @@ var ViewModel = function () {
     function populateInfoWindow(marker) {
 
         if (infoWindow.marker !== marker) {
+
+            var tmpStr = infoHtml.replace ('{{infoContent}}', marker.infoContent);
             infoWindow.marker = marker;
-            infoWindow.setContent('<div>' + marker.infoContent + '</div><div id="yelpRating"></div>');
+            infoWindow.setContent(tmpStr);
             infoWindow.open(self.map, marker);
             infoWindow.addListener('closeclick', function () {
-                infoWindow.setMarker(null);
-
+                infoWindow.marker = null;
             });
             getYelpInfo(marker);
         }
@@ -160,7 +161,6 @@ function getYelpInfo (marker) {
                 tmpStr += '</div>';
             }
         }
-
 
         $('#yelpRating').html(tmpStr);
 

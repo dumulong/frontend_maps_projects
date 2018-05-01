@@ -28,7 +28,7 @@
     <div class="full-page flxbx">
 
         <div class="top-bar">
-            <h1>My Neighborhood Map</h1>
+            <h1>Vacation: Estes Park, Colorado</h1>
         </div>
 
         <div class="main-content flxbx">
@@ -47,7 +47,8 @@
     </div>
 
     <script id="infoWindowTempl" type="text/html">
-        <div id="m-title" data-bind="text: marker.infoContent">dddd</div>
+        <div id="infoContent">{{infoContent}}</div>
+        <div id="yelpRating"></div>
     </script>
 
     <script src="scripts/map_data.js"></script>
