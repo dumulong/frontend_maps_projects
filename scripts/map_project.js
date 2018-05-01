@@ -86,17 +86,12 @@ var mapData = mapData || {}; //Our initial data for the map
 
 function getYelpInfo (marker) {
 
-    var yelpAPIKEY = 'KTjY6iqgQAWGF-q7OEIc8WP__Zdjsoa2jFtx-_n985PbzOZ30GWLDbWnjO3R8ruADAjYx_LWQ9NY1pWqwwL86LF5oPqcn7rywmiJVZ-MFdKJUVZCVRDOuTx3GLTnWnYx';
-
-    var yelpURL = 'https://api.yelp.com/v3/businesses/search';
+    var yelpURL = 'http://127.0.0.1:8181/udacity/frontend_maps_projects/yelp_proxy.php';
     var latlng = 'latitude=' + marker.position.lat() + '&longitude=' +  marker.position.lng();
     var url = yelpURL + '?' + latlng;
 
     $.ajax({
-        url: url,
-        headers: {
-            'Authorization': 'Bearer ' + yelpAPIKEY
-        }
+        url: url
     })
     .done(function(data) {
         console.log('Done!');
