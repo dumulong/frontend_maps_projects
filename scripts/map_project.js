@@ -20,13 +20,10 @@ var ViewModel = function () {
     });
 
     self.findMarker = function (marker) {
-        console.log('here');
         gMap.findMarker(marker);
     };
 
     self.filterMarkers = function () {
-
-        console.log('here');
 
         //Reset to a new list
         self.markerList = ko.observableArray([]);
@@ -43,7 +40,7 @@ var ViewModel = function () {
 
             if (isMatch) {
                 self.markerList.push(new Marker(marker));
-                var gMarker = gMap.addGMarker(marker);
+                var gMarker = gMap.addMarker(marker);
                 bounds.extend(gMarker.position);
             }
         });
@@ -164,16 +161,10 @@ function getYelpInfo (marker) {
 
         $('#yelpRating').html(tmpStr);
 
-        console.log(tmpStr);
-
-    })
-    .done(function(data) {
-        console.log('Done!');
     })
     .fail(function() {
         toastr.error('Unable to retrieve Yelp rating...');
         $('#yelpRating').html('Unable to retrieve Yelp rating');
-        console.log('error');
     });
 
 }
