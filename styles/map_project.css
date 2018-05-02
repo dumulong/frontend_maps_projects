@@ -28,11 +28,23 @@ body {
     padding: 10px;
 }
 
+.top-bar h1 {
+    display: inline-block;
+}
+.top-bar i {
+    padding-right: 10px;
+}
+
 .left-menu {
     flex: 0 1 300px;
     background-color: black;
     color: white;
     padding: 10px;
+}
+
+.left-menu ul {
+    margin-top: 10px;
+    padding-left: 0;
 }
 
 .main-content {
@@ -46,4 +58,41 @@ body {
 
 #map {
     height: 100%;
+}
+
+.navbar {
+    justify-content: flex-start;
+}
+
+.navbar a {
+    padding-left: 6px;
+}
+
+.isHiding {
+    display: none;
+}
+
+.info-title {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 400px) {
+    * { font-size: 0.9em; }
+    .top-bar h1 { font-size: 1.6em; }
+    .left-menu li {
+        margin-bottom: 12px;
+        font-size: 1.1em;
+    }
+    .left-menu {
+        flex: 0 1 150px;
+    }
+}
+
+@media screen and (min-width: 640px) {
+
+}
+
+@media screen and (min-width: 1024px) {
+
 }

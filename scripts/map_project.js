@@ -5,6 +5,7 @@ var ViewModel = function () {
 
     var self = this;
 
+    self.showLeftMenu = ko.observable(true);
     self.filter = ko.observable('');
 
     var Marker = function (item) {
@@ -21,6 +22,10 @@ var ViewModel = function () {
 
     self.findMarker = function (marker) {
         gMap.findMarker(marker);
+    };
+
+    self.toggleLeftMenu = function () {
+        self.showLeftMenu(!self.showLeftMenu());
     };
 
     self.filterMarkers = function () {
@@ -92,8 +97,7 @@ var ViewModel = function () {
         markerList.push(mrk);
 
         mrk.addListener('click', function () {
-            populateInfoWindow(this, infoWindow);
-            animateMarker(mrk);
+            clickMarker(mrk);
         });
 
         return mrk;
@@ -107,20 +111,22 @@ var ViewModel = function () {
 
     self.findMarker = function (marker) {
         markerList.forEach(function(gMarker) {
-            if (gMarker.id === marker.id) { animateMarker (gMarker); }
+            if (gMarker.id === marker.id) { clickMarker(gMarker); }
         });
     };
 
-    function animateMarker (marker) {
+    function clickMarker (marker) {
+        openInfoWindow(marker);
         marker.setAnimation(google.maps.Animation.BOUNCE);
         setTimeout(function() {marker.setAnimation(null); }, 500);
     }
 
-    function populateInfoWindow(marker) {
+    function openInfoWindow(marker) {
 
         if (infoWindow.marker !== marker) {
 
-            var tmpStr = infoHtml.replace ('{{infoContent}}', marker.infoContent);
+            var tmpStr = infoHtml.replace ('{{title}}', marker.title);
+            tmpStr = tmpStr.replace ('{{infoContent}}', marker.infoContent);
             infoWindow.marker = marker;
             infoWindow.setContent(tmpStr);
             infoWindow.open(self.map, marker);
@@ -132,13 +138,23 @@ var ViewModel = function () {
 
     }
 
+    function buildInfoContent (marker, yelpRating) {
+        if (!yelpRating) {
+            yelpRating = '<i class="fa fa-spinner fa-spin" style="font-size:16px"></i> Retrieving Yelp review...';
+        }
+        var tmpStr = infoHtml.replace ('{{title}}', marker.title);
+        tmpStr = tmpStr.replace ('{{infoContent}}', marker.infoContent);
+        tmpStr = tmpStr.replace ('{{yelpRating}}', yelpRating);
+        return tmpStr;
+    }
+
     function getYelpInfo (marker) {
 
         var yelpURL = 'http://weborso.com/Udacity/frontend_maps_projects/yelp_proxy.php';
         var latlng = 'latitude=' + marker.position.lat() + '&longitude=' +  marker.position.lng();
         var url = yelpURL + '?' + latlng;
 
-        $('#yelpRating').html('<i class="fa fa-spinner fa-spin" style="font-size:16px"></i> Retrieving Yelp review...');
+        infoWindow.setContent(buildInfoContent(marker));
 
         $.getJSON(url, function(data) {
 
@@ -147,20 +163,17 @@ var ViewModel = function () {
 
             for (var i = 0; i < items.length; i++) {
                 if (items[i].name.toLowerCase() === marker.title.toLowerCase()) {
-                    tmpStr = '';
-                    tmpStr += '<div>';
-                    tmpStr += 'Yelp Rating: ' + items[i].rating;
+                    tmpStr = 'Yelp Rating: ' + items[i].rating;
                     tmpStr += ' from ' + items[i].review_count + ' Reviewers';
-                    tmpStr += '</div>';
                 }
             }
 
-            $('#yelpRating').html(tmpStr);
+            infoWindow.setContent(buildInfoContent(marker, tmpStr));
 
         })
         .fail(function() {
             toastr.error('Unable to retrieve Yelp rating...');
-            $('#yelpRating').html('Unable to retrieve Yelp rating');
+            infoWindow.setContent(buildInfoContent(marker, 'Unable to retrieve Yelp rating'));
         });
 
     }

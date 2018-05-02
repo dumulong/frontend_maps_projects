@@ -12,10 +12,10 @@
 <meta name="description" content="description here">
 <meta name="keywords" content="keywords,here">
 
-<link rel="stylesheet" href="styles/map_project.css" type="text/css">
 <link rel="stylesheet" href="styles/bootstrap.min.css" type="text/css">
 <link rel="stylesheet" href="styles/font-awesome.min.css" type="text/css">
 <link rel="stylesheet" href="styles/toastr.min.css" type="text/css">
+<link rel="stylesheet" href="styles/map_project.css" type="text/css">
 
 <script>
     document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
@@ -26,15 +26,16 @@
 
 <body>
 
-    <div class="full-page flxbx">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <span data-bind="click: toggleLeftMenu" class="navbar-toggler-icon"></span>
+        <a class="navbar-brand" href="#">Vacation: Estes Park, Colorado</a>
+    </nav>
 
-        <div class="top-bar">
-            <h1>Vacation: Estes Park, Colorado</h1>
-        </div>
+    <div class="full-page flxbx">
 
         <div class="main-content flxbx">
 
-            <div class="left-menu">
+            <div class="left-menu" data-bind="css: { isHiding: !showLeftMenu() }">
                 <input type="text" data-bind="value: filter, valueUpdate: 'afterkeydown', event: { keyup: filterMarkers }" class="form-control" placeholder="Filter by">
                 <ul data-bind="foreach: markerList">
                     <li data-bind="text: title, click: $parent.findMarker"></li>
@@ -48,8 +49,9 @@
     </div>
 
     <script id="infoWindowTempl" type="text/html">
-        <div id="infoContent">{{infoContent}}</div>
-        <div id="yelpRating"></div>
+        <div class="info-title">{{title}}</div>
+        <div class="info-content">{{infoContent}}</div>
+        <div class="info-rating">{{yelpRating}}</div>
     </script>
 
     <script src="scripts/map_data.js"></script>
