@@ -8,20 +8,20 @@ var ViewModel = function () {
     self.showLeftMenu = ko.observable(true);
     self.filter = ko.observable('');
 
-    var Marker = function (item) {
+    var Place = function (item) {
         this.id = item.id;
         this.title = item.title;
         this.position = item.position;
         this.infoContent = item.infoContent;
     };
 
-    self.markerList = ko.observableArray([]);
-    mapData.markers.forEach(function(marker) {
-        self.markerList.push(new Marker(marker));
+    self.placeList = ko.observableArray([]);
+    mapData.markers.forEach(function(place) {
+        self.placeList.push(new Place(place));
     });
 
-    self.findMarker = function (marker) {
-        gMap.findMarker(marker);
+    self.findMarker = function (place) {
+        gMap.findMarker(place);
     };
 
     self.toggleLeftMenu = function () {
@@ -31,21 +31,21 @@ var ViewModel = function () {
     self.filteredPlaces = ko.computed (function() {
 
         var filter = self.filter();
-        var newList = self.markerList.slice();
+        var newList = self.placeList.slice();
 
         gMap.clearAllMarkers ();
         var bounds = new google.maps.LatLngBounds();
 
         if (filter !== '') {
-            var tempList = self.markerList.slice();
+            var tempList = self.placeList.slice();
             var fltr = new RegExp(filter, 'i');
             newList = tempList.filter(function(mrkr) {
                 return fltr.test(mrkr.title);
             });
         }
 
-        newList.forEach(function(marker) {
-            var gMarker = gMap.addMarker(marker);
+        newList.forEach(function(place) {
+            var gMarker = gMap.addMarker(place);
             bounds.extend(gMarker.position);
         });
 
@@ -75,8 +75,8 @@ var ViewModel = function () {
         infoWindow = new google.maps.InfoWindow();
 
         var bounds = new google.maps.LatLngBounds();
-        mapData.markers.forEach(function(marker) {
-            var gMark = self.addMarker(marker, infoWindow);
+        mapData.markers.forEach(function(place) {
+            var gMark = self.addMarker(place, infoWindow);
             bounds.extend(gMark.position);
         });
         self.map.fitBounds(bounds);
@@ -84,13 +84,13 @@ var ViewModel = function () {
         ko.applyBindings(new ViewModel());
     };
 
-    self.addMarker = function (marker) {
+    self.addMarker = function (place) {
 
         var mrk = new google.maps.Marker({
-            id: marker.id,
-            title: marker.title,
-            infoContent: marker.infoContent,
-            position: marker.position,
+            id: place.id,
+            title: place.title,
+            infoContent: place.infoContent,
+            position: place.position,
             map: self.map,
             animation: google.maps.Animation.DROP
         });
