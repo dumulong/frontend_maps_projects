@@ -12,7 +12,8 @@ var ViewModel = function () {
         this.id = item.id;
         this.title = item.title;
         this.position = item.position;
-        this.infoContent = item.infoContent;
+        this.comment = item.comment;
+        this.marker = gMap.createMarker(this);
     };
 
     self.placeList = ko.observableArray([]);
@@ -45,8 +46,8 @@ var ViewModel = function () {
         }
 
         newList.forEach(function(place) {
-            var gMarker = gMap.addMarker(place);
-            bounds.extend(gMarker.position);
+            gMap.showMarker(place);
+            bounds.extend(place.marker.position);
         });
 
         if (newList.length > 0) { gMap.map.fitBounds(bounds); }
@@ -72,36 +73,45 @@ var ViewModel = function () {
 
         self.map = new google.maps.Map($('#map').get(0), mapData.mapOptions);
 
+        var viewModel = new ViewModel();
+
         infoWindow = new google.maps.InfoWindow();
 
         var bounds = new google.maps.LatLngBounds();
-        mapData.markers.forEach(function(place) {
-            var gMark = self.addMarker(place, infoWindow);
-            bounds.extend(gMark.position);
+
+        var list = viewModel.filteredPlaces();
+        list.forEach(function(place) {
+            self.showMarker(place);
+            bounds.extend(place.marker.position);
         });
         self.map.fitBounds(bounds);
 
-        ko.applyBindings(new ViewModel());
+        ko.applyBindings(viewModel);
     };
 
-    self.addMarker = function (place) {
+    self.createMarker = function (place) {
 
         var mrk = new google.maps.Marker({
             id: place.id,
             title: place.title,
-            infoContent: place.infoContent,
+            comment: place.comment,
             position: place.position,
             map: self.map,
             animation: google.maps.Animation.DROP
         });
-
-        markerList.push(mrk);
 
         mrk.addListener('click', function () {
             clickMarker(mrk);
         });
 
         return mrk;
+
+    };
+
+    self.showMarker = function (place) {
+        place.marker.setMap (self.map);
+        place.marker.setAnimation(google.maps.Animation.DROP)
+        markerList.push(place.marker);
     };
 
     self.clearAllMarkers = function () {
@@ -127,7 +137,7 @@ var ViewModel = function () {
         if (infoWindow.marker !== marker) {
 
             var tmpStr = infoHtml.replace ('{{title}}', marker.title);
-            tmpStr = tmpStr.replace ('{{infoContent}}', marker.infoContent);
+            tmpStr = tmpStr.replace ('{{comment}}', marker.comment);
             infoWindow.marker = marker;
             infoWindow.setContent(tmpStr);
             infoWindow.open(self.map, marker);
@@ -144,7 +154,7 @@ var ViewModel = function () {
             yelpRating = '<i class="fa fa-spinner fa-spin" style="font-size:16px"></i> Retrieving Yelp review...';
         }
         var tmpStr = infoHtml.replace ('{{title}}', marker.title);
-        tmpStr = tmpStr.replace ('{{infoContent}}', marker.infoContent);
+        tmpStr = tmpStr.replace ('{{comment}}', marker.comment);
         tmpStr = tmpStr.replace ('{{yelpRating}}', yelpRating);
         return tmpStr;
     }
