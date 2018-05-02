@@ -35,6 +35,7 @@ var ViewModel = function () {
         var newList = self.placeList.slice();
 
         gMap.clearAllMarkers ();
+
         var bounds = new google.maps.LatLngBounds();
 
         if (filter !== '') {
@@ -72,11 +73,9 @@ var ViewModel = function () {
     self.initMap = function () {
 
         self.map = new google.maps.Map($('#map').get(0), mapData.mapOptions);
-
-        var viewModel = new ViewModel();
-
         infoWindow = new google.maps.InfoWindow();
 
+        var viewModel = new ViewModel();
         var bounds = new google.maps.LatLngBounds();
 
         var list = viewModel.filteredPlaces();
@@ -88,6 +87,10 @@ var ViewModel = function () {
 
         ko.applyBindings(viewModel);
     };
+
+    self.googleLoadError = function () {
+        toastr.error('Unable to load the Google Maps API!');
+    }
 
     self.createMarker = function (place) {
 
@@ -115,6 +118,7 @@ var ViewModel = function () {
     };
 
     self.clearAllMarkers = function () {
+        infoWindow.close();
         markerList.forEach(function(marker) {
             marker.setMap(null);
         });
