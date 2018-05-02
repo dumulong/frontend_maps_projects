@@ -28,30 +28,31 @@ var ViewModel = function () {
         self.showLeftMenu(!self.showLeftMenu());
     };
 
-    self.filterMarkers = function () {
+    self.filteredPlaces = ko.computed (function() {
 
-        //Reset to a new list
-        self.markerList = ko.observableArray([]);
+        var filter = self.filter();
+        var newList = self.markerList.slice();
+
         gMap.clearAllMarkers ();
-
-        //Now, if the title maches the filter, add it to our list
         var bounds = new google.maps.LatLngBounds();
-        var fltr = new RegExp(self.filter(), 'i');
 
-        mapData.markers.forEach(function(marker) {
+        if (filter !== '') {
+            var tempList = self.markerList.slice();
+            var fltr = new RegExp(filter, 'i');
+            newList = tempList.filter(function(mrkr) {
+                return fltr.test(mrkr.title);
+            });
+        }
 
-            var isMatch = true;
-            if (self.filter() !== '') { isMatch = fltr.test(marker.title); }
-
-            if (isMatch) {
-                self.markerList.push(new Marker(marker));
-                var gMarker = gMap.addMarker(marker);
-                bounds.extend(gMarker.position);
-            }
+        newList.forEach(function(marker) {
+            var gMarker = gMap.addMarker(marker);
+            bounds.extend(gMarker.position);
         });
 
-        if (self.markerList().length > 0) { gMap.map.fitBounds(bounds); }
-    };
+        if (newList.length > 0) { gMap.map.fitBounds(bounds); }
+
+        return newList;
+    });
 
 };
 

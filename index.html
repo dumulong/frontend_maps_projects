@@ -36,8 +36,8 @@
         <div class="main-content flxbx">
 
             <div class="left-menu" data-bind="css: { isHiding: !showLeftMenu() }">
-                <input type="text" data-bind="value: filter, valueUpdate: 'afterkeydown', event: { keyup: filterMarkers }" class="form-control" placeholder="Filter by">
-                <ul data-bind="foreach: markerList">
+                <input type="text" data-bind="value: filter, valueUpdate: 'keyup'" class="form-control" placeholder="Filter by">
+                <ul data-bind="foreach: filteredPlaces">
                     <li data-bind="text: title, click: $parent.findMarker"></li>
                 </ul>
             </div>
