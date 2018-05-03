@@ -38,7 +38,7 @@
             <div class="left-menu" data-bind="css: { isHiding: !showLeftMenu() }">
                 <input type="text" data-bind="value: filter, valueUpdate: 'keyup'" class="form-control" placeholder="Filter by">
                 <ul data-bind="foreach: filteredPlaces">
-                    <li data-bind="text: title, click: $parent.findMarker"></li>
+                    <li data-bind="text: title, click: $parent.clickListItem"></li>
                 </ul>
             </div>
 

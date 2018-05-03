@@ -17,31 +17,37 @@ var ViewModel = function () {
     };
 
     self.placeList = ko.observableArray([]);
+
     mapData.markers.forEach(function(place) {
         self.placeList.push(new Place(place));
     });
 
-    self.findMarker = function (place) {
-        gMap.findMarker(place);
+    self.clickListItem = function (place) {
+        gMap.clickMarker(place.marker);
     };
 
     self.toggleLeftMenu = function () {
         self.showLeftMenu(!self.showLeftMenu());
     };
 
+    self.clearAllMarkers = function () {
+        self.placeList().forEach(function(place) {
+            place.marker.setMap(null);
+        });
+    };
+
     self.filteredPlaces = ko.computed (function() {
 
-        var filter = self.filter();
-        var newList = self.placeList.slice();
+        var newList = self.placeList.slice(); //Get a copy...
 
-        gMap.clearAllMarkers ();
+        gMap.closeInfoWindow();
+        self.clearAllMarkers ();
 
         var bounds = new google.maps.LatLngBounds();
 
-        if (filter !== '') {
-            var tempList = self.placeList.slice();
-            var fltr = new RegExp(filter, 'i');
-            newList = tempList.filter(function(mrkr) {
+        if (self.filter() !== '') {
+            var fltr = new RegExp(self.filter(), 'i');
+            newList = newList.filter(function(mrkr) {
                 return fltr.test(mrkr.title);
             });
         }
@@ -63,11 +69,9 @@ var ViewModel = function () {
     var self = this;
 
     self.map = null;
+
     var infoWindow = null;
-
-    var markerList = [];
-
-    var infoHtml = $('#infoWindowTempl').get(0).innerHTML;
+    var infoWindowHtml = $('#infoWindowTempl').get(0).innerHTML;
 
     //Starting here!
     self.initMap = function () {
@@ -90,7 +94,7 @@ var ViewModel = function () {
 
     self.googleLoadError = function () {
         toastr.error('Unable to load the Google Maps API!');
-    }
+    };
 
     self.createMarker = function (place) {
 
@@ -104,60 +108,49 @@ var ViewModel = function () {
         });
 
         mrk.addListener('click', function () {
-            clickMarker(mrk);
+            self.clickMarker(mrk);
         });
 
         return mrk;
 
     };
 
+    //Show the marker and make it drop
     self.showMarker = function (place) {
         place.marker.setMap (self.map);
-        place.marker.setAnimation(google.maps.Animation.DROP)
-        markerList.push(place.marker);
+        place.marker.setAnimation(google.maps.Animation.DROP);
     };
 
-    self.clearAllMarkers = function () {
-        infoWindow.close();
-        markerList.forEach(function(marker) {
-            marker.setMap(null);
-        });
-    };
-
-    self.findMarker = function (marker) {
-        markerList.forEach(function(gMarker) {
-            if (gMarker.id === marker.id) { clickMarker(gMarker); }
-        });
-    };
-
-    function clickMarker (marker) {
+    //Click marker shows the info window and bouce the marker
+    self.clickMarker = function (marker) {
         openInfoWindow(marker);
         marker.setAnimation(google.maps.Animation.BOUNCE);
         setTimeout(function() {marker.setAnimation(null); }, 500);
-    }
+    };
 
+    self.closeInfoWindow = function () {
+        infoWindow.close();
+    };
+
+    //Open the info window
     function openInfoWindow(marker) {
-
         if (infoWindow.marker !== marker) {
-
-            var tmpStr = infoHtml.replace ('{{title}}', marker.title);
-            tmpStr = tmpStr.replace ('{{comment}}', marker.comment);
             infoWindow.marker = marker;
-            infoWindow.setContent(tmpStr);
+            infoWindow.setContent(buildInfoContent(marker));
             infoWindow.open(self.map, marker);
             infoWindow.addListener('closeclick', function () {
                 infoWindow.marker = null;
             });
             getYelpInfo(marker);
         }
-
     }
 
+    //Build the content for an info window
     function buildInfoContent (marker, yelpRating) {
         if (!yelpRating) {
             yelpRating = '<i class="fa fa-spinner fa-spin" style="font-size:16px"></i> Retrieving Yelp review...';
         }
-        var tmpStr = infoHtml.replace ('{{title}}', marker.title);
+        var tmpStr = infoWindowHtml.replace ('{{title}}', marker.title);
         tmpStr = tmpStr.replace ('{{comment}}', marker.comment);
         tmpStr = tmpStr.replace ('{{yelpRating}}', yelpRating);
         return tmpStr;
