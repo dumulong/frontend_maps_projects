@@ -1,26 +1,27 @@
-# Feedreader
+# Estes Park Vacation
 
-This project shows you a list of feeds from different sources.  You click on the hamburger icon to see the list of sources that you can choose from. Happy reading!
+This project shows you a list of point of interest around the town of Estes Park, Colorado.
 
 ## Installation
 
 Clone the GitHub repository:
 
 ```
-$ git clone https://github.com/dumulong/frontend-nanodegree-feedreader.git
-$ cd frontend-nanodegree-feedreader
+$ git clone https://github.com/dumulong/frontend_maps_projects.git
+$ cd frontend_maps_projects
 ```
 
 ## How do I run this application?
 
 Just open the index.html file.
 
-In this version of the project, we have integrated some unit testing into the project.  You'll see the results of those tests at the bottom of the file.  It will show you if the tests are passing or failing.
+In the left menu, you should see a list of points of interest. The points will be shown as markers on the google map.
 
-## Credits
+You may use the filter field in order to focus on certain points.
 
-Please note that the current project is getting data from the Yelp API.  We did have to implement a proxy PHP page because we ran into some error related to the Same Origin Policy.  You can see the code for the proxy in the file yelp_proxy.php.  I did make it available from my Godaddy hosted website, so the current project works without the need of a server running PHP.
+Clicking the "hamburger" icon from the top menu will show/hide the left menu bar.
+
 
 ## License
 
-Feedreader is distributed under the MIT license.
+Estes Park Vacation is distributed under the MIT license.
